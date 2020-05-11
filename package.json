@@ -1,6 +1,6 @@
 {
   "name": "enco-poodle-mode",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "MODE class for Enco Project",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,10 @@
   },
   "homepage": "https://github.com/sichallinor/enco-poodle-mode#readme",
   "dependencies": {
+    "enco-poodle-api-interface": "^0.1.8",
     "enco-poodle-crud-interface": "^0.1.11",
-    "enco-poodle-mode-simple": "^0.1.1"
+    "enco-poodle-json-schema": "^0.1.7",
+    "enco-poodle-mode-simple": "^0.1.1",
+    "enco-poodle-utils": "^0.1.1"
   }
 }
