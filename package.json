@@ -1,0 +1,23 @@
+{
+  "name": "enco-poodle-mode",
+  "version": "0.1.1",
+  "description": "MODE class for Enco Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sichallinor/enco-poodle-mode.git"
+  },
+  "author": "Simon Challinor <sdchallinor@gmail.com> (https://tdr-encompass.com/sichallinor)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sichallinor/enco-poodle-mode/issues"
+  },
+  "homepage": "https://github.com/sichallinor/enco-poodle-mode#readme",
+  "dependencies": {
+    "enco-poodle-crud-interface": "^0.1.11",
+    "enco-poodle-mode-simple": "^0.1.1"
+  }
+}
