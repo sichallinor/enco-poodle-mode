@@ -1,6 +1,6 @@
 
 import { default as mfCrud } from './ModeFunctions_Crud.js'
-import mfModelAndItems from 'enco-poodle-mode-simple';
+import { mfModelAndItems }  from 'enco-poodle-mode-simple';
 
 export default {
 

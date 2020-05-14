@@ -19,7 +19,7 @@ export default class ModeInterface_Crud {
 
 
     mfStore(){
-    	mf.modeStore(this);
+    	return mf.modeStore(this);
     }
 
     mfUpdate(){

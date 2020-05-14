@@ -1,7 +1,9 @@
 'use strict';
 
-import { default as ModeItem } from './ModeItem.js'
+import { ModeItem } from 'enco-poodle-mode-simple'
 import { default as mf } from '../ModeFunctions_LabradorAwsS3.js'
+
+
 
 export default class ModeItem_WtdHobby_WithAdditions extends ModeItem {
 
@@ -10,17 +12,17 @@ export default class ModeItem_WtdHobby_WithAdditions extends ModeItem {
     }
 
 
+    // -------------------------------------------------
     // THIS OBJECT HAS AT LEAST ONE AWS S3 ITEM
     hasAwsS3Items(){
     	return ( this.hasOwnProperty('AwsS3Items') && this.AwsS3Items.length>0 )
     }
-
+    // GET THE FIRST AWS S3 ITEM
     getFirstAwsS3Item(){
     	if(this.hasAwsS3Items()) return this.AwsS3Items[0]
     	return null;
     }
-
-
+    // GET THE URL OF THE PRIMARY S3 ITEM
     getMyPrimaryImageUrl(mode){
     	var primaryAwsS3Item = this.getFirstAwsS3Item()
     	if(primaryAwsS3Item){
@@ -32,5 +34,6 @@ export default class ModeItem_WtdHobby_WithAdditions extends ModeItem {
     	}
     }
 
+    // -------------------------------------------------
 
 }

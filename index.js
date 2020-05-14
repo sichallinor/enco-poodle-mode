@@ -14,7 +14,7 @@ export { default as mi } from './ModeInterfaces.js'
 
 export { default as mfCrud } from './ModeFunctions_Crud.js'
 
-
+export { default as ModeItem_WtdHobby_WithAdditions } from './mode_item_prototypes/ModeItem_WtdHobby_WithAdditions.js'
 
 //module.exports = require('./Mode.js');
 

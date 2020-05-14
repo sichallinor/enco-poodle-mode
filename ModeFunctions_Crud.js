@@ -68,11 +68,14 @@ export default {
             prom = this.modeCreate(mode);
         }
 
+        return prom;
+
+        /*
         prom.then(function() {
             console.log("mfStore : STORED");
         }, function(err) {
             console.log("mfStore : ERROR",err);
-        });
+        });*/
 
     },
 
@@ -82,11 +85,12 @@ export default {
         mode.is_updating = true;
         //-------
         return new Promise(function(resolve, reject) {
+
             var promUpdate = poodleApiInterface.updateItem(mode)
             if(promUpdate){
-                promUpdate.then(function() {
+                promUpdate.then(function(response) {
                     mode.is_updating = false;
-                    resolve();
+                    resolve(response);
                 }, function(err) {
                     mode.is_updating = false;
                     reject();
@@ -108,9 +112,9 @@ export default {
             console.log("mfCreate : starting to create");        
             var promToCreate = poodleApiInterface.createItem(mode)
             if(promToCreate){
-                promToCreate.then(function() {
+                promToCreate.then(function(response) {
                     mode.is_creating = false;
-                    resolve();
+                    resolve(response);
                 }, function(err) {
                     mode.is_creating = false;
                     reject();
@@ -150,7 +154,7 @@ export default {
                 // THE EXECUTE THE PROMISE
                 if(prom) {
                     prom.then(function(response) {
-                        console.log("DELETED");
+                        console.log("DELETED : ", response);
                         resolve(response);
                     }, function(err) {
                         console.log("ERROR");
