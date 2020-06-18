@@ -17,10 +17,10 @@
   },
   "homepage": "https://github.com/sichallinor/enco-poodle-mode#readme",
   "dependencies": {
-    "enco-poodle-api-interface": "^0.1.16",
-    "enco-poodle-crud-interface": "^0.1.18",
-    "enco-poodle-json-schema": "^0.1.16",
-    "enco-poodle-mode-simple": "^0.1.5",
+    "enco-poodle-api-interface": "^0.1.17",
+    "enco-poodle-crud-interface": "^0.1.19",
+    "enco-poodle-json-schema": "^0.1.18",
+    "enco-poodle-mode-simple": "^0.1.7",
     "enco-poodle-utils": "^0.1.1"
   }
 }

@@ -488,7 +488,7 @@ export default class Mode {
         if(String(functionStr).startsWith('FUNC:')) functionStr = functionStr.split(":")[1];
         if(String(functionStr).startsWith('RTFUNC:')) functionStr = functionStr.split(":")[1];
 
-        //console.log("executeDynamicFunction : ", functionStr,self,mode,parent)
+        //console.log("executeDynamicFunction : ", functionStr,self,mode,parent,Mode.mode_universe)
 
         // now execute the real function
         var result = null;
@@ -496,6 +496,7 @@ export default class Mode {
             var myFunc = new Function('self','mode','parent','universe', functionStr);
             result = myFunc(self,mode,parent,Mode.mode_universe);
 
+            //console.log("executeDynamicFunction : ",functionStr,result)
         }catch(ex){
             //console.log("executeDynamicFunction_error : ",ex,functionStr)
         }
@@ -533,6 +534,31 @@ export default class Mode {
             }
         }
     }
+
+
+    // =================================================
+    // CHILD MODES
+
+    // ADD A REAL CHILD MODE TO THIS MODE
+    addChildMode(childMode){
+        if(!this.hasOwnProperty('modes')){
+            this['modes'] = []
+        }
+        if(!this.hasOwnProperty('child')){
+            this['child'] = {};
+        }
+        //-----
+        // PUSH INTO MODE ARRAY
+        this['modes'].push(childMode);
+        // AND ADD TO THE CHILD OBJECT
+        if(childMode.hasOwnProperty('reference')){
+            this['child'][childMode.reference] = childMode;
+        }
+
+    }
+
+
+
 
 
     // ==================================================
