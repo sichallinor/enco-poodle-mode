@@ -49,6 +49,10 @@ export default class ModeInterface_ModelAndItems {
 
     }
 
+    // UPDATE ALL THE BULK ITEMS BASED ON THE BULK MODEL
+    mfBulkUpdate(){
+        mf.modeBulkUpdate(this)        
+    }
 
     // EMPTY THE MODELS ARRAY
     mfRemoveDeletedItems(){

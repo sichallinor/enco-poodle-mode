@@ -117,16 +117,17 @@ export default {
 
 					var prom = mfCrud.modeGetItems(mode);
 					prom.then(function(result){
-						console.log("getImages_FINAL NUM ITEMS :",result,result.length);
-						for(var i=0; i<result.length; i++){
-							var res = result[i]
+						var data = result.data;
+						console.log("getImages_FINAL NUM ITEMS :",data,data.length);
+						for(var i=0; i<data.length; i++){
+							var res = data[i]
 
 							// FIND THE SINGLE IMAGE DOWNLOAD URL
 							res['url'] = self.modeGet_LabradorAwsS3ImageUrlDownload(mode,res['key'])
 							res['name'] = res['key'];
 						}
 
-						resolve(result)
+						resolve(data)
 					}, function(err) {
 						reject(err)
 					});

@@ -37,6 +37,9 @@ export default class ModeInterface_Crud {
     }
 
 
+    mfBulkStore(){
+        return mf.modeBulkStore(this);
+    }
 
 
 

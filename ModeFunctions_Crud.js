@@ -173,6 +173,30 @@ export default {
     },
 
 
+    modeBulkStore(mode){
+        mode.mLog("modeBulkStore");
+
+        mode.is_updating = true;
+        //-------
+        return new Promise(function(resolve, reject) {
+
+            var promUpdate = poodleApiInterface.updateItems(mode)
+            if(promUpdate){
+                promUpdate.then(function(response) {
+                    mode.is_updating = false;
+                    resolve(response);
+                }, function(err) {
+                    mode.is_updating = false;
+                    reject();
+                });
+            }else{
+                console.log("modeUpdate : NOTHING TO DO, OR NO INTERFACE");
+                mode.is_updating = false;
+                resolve();
+            }
+        });
+
+    },
 
 }
 
