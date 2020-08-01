@@ -1,4 +1,5 @@
-
+// NOTE THAT A MODE INTERFACE IS A CLASS THAT CAN BE ADDED TO A MODE OBJECT 
+// IN ORDER TO EMBELISH THE MODE WITH ADDITIONAL POWERS
 
 import { mfModelAndItems as mf } from 'enco-poodle-mode-simple';
 
@@ -56,9 +57,14 @@ export default class ModeInterface_ModelAndItems {
 
     // EMPTY THE MODELS ARRAY
     mfRemoveDeletedItems(){
-        mf.modeRemoveDeletedItems()
+        mf.modeRemoveDeletedItems(this)
     }
 
+
+    // REPLACE THE CURRENT MODEL BY SCANNING THROUGH (A RECENTLY UPDATED) ITEMS LIST AND MATCHING ON THE IDENTITY FIELD
+    mfUpdateCurrentModelFromItemsByIdentityMatch(){
+        mf.modeUpdateCurrentModelFromItemsByIdentityMatch(this)
+    }
 
 
     // ------------------------------------

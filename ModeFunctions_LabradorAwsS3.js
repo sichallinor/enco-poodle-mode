@@ -1,5 +1,5 @@
 
-import { default as mfCrud } from './ModeFunctions_Crud.js'
+import { default as mfApi } from './ModeFunctions_Api.js'
 import { mfModelAndItems }  from 'enco-poodle-mode-simple';
 
 export default {
@@ -92,7 +92,7 @@ export default {
 
 	},
 
-	// A SIMPLE WRAPPER AROUND THE "mfCrud.modeGetItems" METHOD
+	// A SIMPLE WRAPPER AROUND THE "mfApi.modeGetItems" METHOD
 	modeGetItems_LabradorAwsS3Images(mode){
 		var self = this;
 
@@ -115,7 +115,7 @@ export default {
 
 					console.log("urlpath : ",mode.urlpath )
 
-					var prom = mfCrud.modeGetItems(mode);
+					var prom = mfApi.modeGetItems(mode);
 					prom.then(function(result){
 						var data = result.data;
 						console.log("getImages_FINAL NUM ITEMS :",data,data.length);
@@ -147,7 +147,7 @@ export default {
 	},
 
 
-	// A SIMPLE WRAPPER AROUND THE "mfCrud.modeDelete" METHOD
+	// A SIMPLE WRAPPER AROUND THE "mfApi.modeDelete" METHOD
 	modeDelete_LabradorAwsS3Images(mode,file){
 		var self = this;
 
@@ -162,7 +162,7 @@ export default {
 			mode.urlpath = finalPath;
 			// ---------------------
 
-			var prom = mfCrud.modeDelete(mode);
+			var prom = mfApi.modeDelete(mode);
 			prom.then(function(result){
 				console.log("deleteImages_RESULT :",result);
 				resolve(result)

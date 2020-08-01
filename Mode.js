@@ -209,11 +209,83 @@ export default class Mode {
 
 
     }
+
+
+    //-------------------------------------------
+    // STATIC METHODS (CONFIG FILE / CONFIG POLICY FILE / CONFIG REGISTRIES)
+    // THE NAME OF THE CONFIG 
+    // THE RAW MODE - (MAIN MODE FOR THIS CONFIG)
+    // THE RAW REGISTRY
+    // THE DELEGATES OBJECT ... CONTAINS DELEGATES SUCH AS "MODE CREATE FUNCTION" (THAT CAN CREATE AND INITIALISE THE MODE)
+    static addRegistryConfig(name, rawMode, rawRegistry, delegates){
+        if(!Mode.mode_universe) return;
+
+        var config = {
+            'name' : name,
+            'raw_mode' : rawMode,
+            'raw_registry' : rawRegistry,
+            'delegates' : delegates
+        }
+
+        if(!Mode.mode_universe.hasOwnProperty('registry_configs')) Mode.mode_universe['registry_configs'] = {};
+
+        Mode.mode_universe.registry_configs[name] = config;
+    } 
+
+    // CREATE A NEW INSTANCE OF THE MAIN MODE WITHIN A PARTICULAR REGISTRY CONFIG / POLICY FILE
+    static createModeFromUniversalRegistryConfigs(name){
+        var registryConfig = Mode.mode_universe.registry_configs[name];
+        // CREATE USING DELEGATE ...        
+        if(registryConfig.delegates.hasOwnProperty('delegate_createNewMode')){
+            var newMode = registryConfig.delegates.delegate_createNewMode();
+            // --------------------
+            // DELEGATES FOR "newMode"
+            // SET THE delegate_createNewMode (attach the create function to the mode)
+            var configDelegates = Mode.getDelegates_FromUniversalRegistryConfigs(name);
+            if( configDelegates ) newMode.addDelegates(configDelegates)
+    
+            // --------------------
+            return newMode;
+        }
+        return null;
+    }
+
+
+    //-------------------------------------------
+    // STATIC METHODS (DELEGATES)
+    static getDelegates_FromUniversalRegistryConfigs(name){
+        var registryConfig = Mode.mode_universe.registry_configs[name];     
+        if(registryConfig.delegates) 
+            return registryConfig.delegates;
+        return null;
+    }
+
+    addDelegates(delegateSetToAdd){
+        if(!this.hasOwnProperty('delegates')) this['delegates'] = {}
+        Object.assign(this.delegates,delegateSetToAdd)
+    }
+    addDelegate(name,delegate){
+        if(!this.hasOwnProperty('delegates')) this['delegates'] = {}
+        this.delegates[name] = delegate
+    }
+
+
+    //-------------------------------------------
+    // STATIC METHODS (PRIMATIVES) ... EACH PRIMATIVE NEEDS TO BE PROVIDED WITHIN AN ENCLOSING OBJECT (AS A PROPERTY OF THAT OBJECT)
     static addPrimativesToUniverse_fromSet(setOfPrimatives){
         Object.assign( Mode.raw_primatives_dictionary, setOfPrimatives);
         // AFTER EACH ADDITION ... 
         Mode.mode_universe.raw_primatives = Object.values(Mode.raw_primatives_dictionary);  
     }    
+
+
+    // -------------------------------------------------
+    // STATIC METHODS (MODE)
+    // obj : the RAW mode, a simple object to create a Mode from
+    // parent : a parent Mode
+    // modeRegistry : a simple Object containing all the RAW modes, each as simple Objects
+    //   this will likely be a config file containing all the modes for a particular application
+    // 
     static addModeToUniverse(newMode){
         // --------------------------------------------
         // ADD THIS MODE TO THE UNIVERSE'S MODES ARRAY
@@ -231,13 +303,8 @@ export default class Mode {
         }
 
     }
-    // -------------------------------------------------
-    // STATIC METHODS (MODE)
-    // obj : the RAW mode, a simple object to create a Mode from
-    // parent : a parent Mode
-    // modeRegistry : a simple Object containing all the RAW modes, each as simple Objects
-    //   this will likely be a config file containing all the modes for a particular application
-    // 
+
+    // A MODE REGISTRY IS SYNONOMOUS WITH CONFIG FILE / POLICY FILE
     static createMode(obj,parent=null,modeRegistry=null){
         //1) FIRST CHECK IF THE UNIVERSE EXISTS (CREATE IF NOT)
         if(!Mode.mode_universe) Mode.createUniverse();
@@ -259,6 +326,7 @@ export default class Mode {
         var clone = Mode.parseRawObject(obj,modeRegistry)
         // else convert it to a REAL Mode (plus all its children modes)
         var newMode = Mode.createModeFromPrimatives(clone);  //Object.assign(new Mode, obj)
+
 
         Mode.ensureChildrenModes(newMode,modeRegistry);
         newMode.initialiseAll();
@@ -298,11 +366,19 @@ export default class Mode {
         //-----------------------------------
         // CONVERT RAW COMPONENTS >> MODES
         if( mode.hasOwnProperty('components') ) {
+            var components = {}; 
+            mode['child_components'] = components;
             for(var i=0; i<mode.components.length; i++){
                 var aComponent = Mode.createModeHierarchy(mode.components[i],mode,modeRegistry);
                 mode.components[i] = aComponent;
+                if(aComponent.hasOwnProperty('reference')){
+                    components[aComponent.reference] = aComponent;
+                }
             }
+
         }
+
+
         //-----------------------------------
         // CONVERT RAW COMPONENTS >> MODES
         if( mode.hasOwnProperty('proxy') ) {
@@ -373,12 +449,35 @@ export default class Mode {
         var newMode = new Mode;
         if ( obj.hasOwnProperty('primatives') ){
             for(var i=0; i<obj.primatives.length; i++){
-                var primativeName = obj.primatives[i];
-                if(Mode.raw_primatives_dictionary.hasOwnProperty(primativeName) ){
-                    var primative = Mode.raw_primatives_dictionary[primativeName];
-                    var primative_clone = JSON.parse(JSON.stringify(primative)) ;
-                    newMode = Object.assign(newMode, primative_clone);
+                var fullPrimativeName = obj.primatives[i];
+                var primative = null;
+
+                if(fullPrimativeName.includes(".")){
+                    var parts = fullPrimativeName.split('.');
+                    var registryName = parts[0];
+                    var primativeName = parts[1];
+                    // ----------------
+                    // ATTEMPT TO FIND THE REGISTRY
+                    if(Mode.mode_universe.registry_configs.hasOwnProperty(registryName)){
+                        var registry = Mode.mode_universe.registry_configs[registryName];
+                        // ATTEMPT TO FIND THE PRIMATIVE (WITHIN THE REGISTRY)
+                        if(registry.raw_registry.hasOwnProperty(primativeName)){
+                            primative = registry.raw_registry[primativeName]
+                        }
+                    }
+                }else {
+                    // ORIGINAL - MAY BE DEPRECATED SOON
+                    //-----------------------------------------
+                    // TAKE FROM 'raw_primatives_dictionary'
+                    if(Mode.raw_primatives_dictionary.hasOwnProperty(fullPrimativeName) ){
+                        primative = Mode.raw_primatives_dictionary[fullPrimativeName];
+                    }
                 }
+
+
+                var primative_clone = JSON.parse(JSON.stringify(primative)) ;
+                newMode = Object.assign(newMode, primative_clone);
+
             }
         }
         Object.assign(newMode, obj)
@@ -766,6 +865,7 @@ export default class Mode {
     // ---------------------------------------
     // PROPERTIES ...
     // GETTERS AND SETTERS
+
 
     // -------------------------------
     // filters used for querying the date range

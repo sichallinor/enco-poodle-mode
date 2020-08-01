@@ -1,9 +1,10 @@
+// NOTE THAT A MODE INTERFACE IS A CLASS THAT CAN BE ADDED TO A MODE OBJECT 
+// IN ORDER TO EMBELISH THE MODE WITH ADDITIONAL POWERS
 
-
-import { default as mf } from './ModeFunctions_Crud.js'
+import { default as mf } from './ModeFunctions_Api.js'
 
 //module.exports = class Mode {
-export default class ModeInterface_Crud {
+export default class ModeInterface_Api {
 
 
 

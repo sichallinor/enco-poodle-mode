@@ -4,7 +4,8 @@
 import { default as Mode } from './Mode'
 
 import { default as ModeModelAndItems } from './ModeInterfaces_ModelAndItems'
-import { default as ModeIntefaceCrud } from './ModeInterfaces_Crud'
+import { default as ModeIntefaceApi } from './ModeInterfaces_Api'
+import { default as ModeIntefaceLabradorLogin } from './ModeInterfaces_LabradorLogin'
 import { default as ModeIntefaceLabradorAwsS3 } from './ModeInterfaces_LabradorAwsS3'
 
 //import { default as mf } from './ModeFunctions';
@@ -18,7 +19,7 @@ export default {
 
     initialise(){
     	// THIS IS WHERE WE ADD ALL THE INTERFACES TO THE MODE CLASS
-        this.implement(Mode,ModeModelAndItems,ModeIntefaceCrud,ModeIntefaceLabradorAwsS3);
+        this.implement(Mode,ModeModelAndItems,ModeIntefaceApi,ModeIntefaceLabradorLogin,ModeIntefaceLabradorAwsS3);
     },
 
 
