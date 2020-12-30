@@ -27,6 +27,26 @@ export default {
     // then manipulate the mode in order to produce the finished mode
 
 
+    modeGetItem(mode){
+        //console.log("actionGetItems : MODE :",this.mode_for_items.reference);
+        //self.mode_master.is_reading = true;
+        return new Promise(function(resolve, reject) {
+            var prom = poodleApiInterface.getItem(mode);
+            if(prom){
+                prom.then(function(response) {
+                  //console.log("FINAL NUM ITEMS :",response, mode.items.length);
+                  resolve(response);
+                }, function(err) {
+                  reject("ERROR : NOTHING TO DO");
+                });
+            }else{
+                console.log("ERROR : NOTHING TO DO");
+                resolve("ERROR : NOTHING TO DO");
+            }
+        });
+    },
+
+
     modeGetItems(mode){
         //console.log("actionGetItems : MODE :",this.mode_for_items.reference);
         //self.mode_master.is_reading = true;

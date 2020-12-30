@@ -14,6 +14,10 @@ export default class ModeInterface_Api {
 
 
 
+    mfGetItem(){
+        return mf.modeGetItem(this);
+    }
+
     mfGetItems(){
     	return mf.modeGetItems(this);
     }
